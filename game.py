@@ -1,21 +1,38 @@
 import pygame
 import os
 from pygame import *
+from tkinter import messagebox
+from tkinter import *
+from PIL import Image,ImageTk
 import levels
 
-DISPLAY = (1280, 720)
+DISPLAY = (800, 640)
 DEPTH = 32
 FLAGS = 0
 
 # in blocks, 25 x 20
 
+window=Tk()
+window.geometry('300x300')
+window.title('Platformer')
+window.resizable(width=False,height=False)
+image=Image.open("entrance.png")
+background_image=ImageTk.PhotoImage(image)
+background_label = Label(window, image=background_image).place(x=0, y=0, relwidth=1, relheight=1)
+lbTitle=Label(window,text="P L A T F O R M E R",fg='blue',bg='yellow',relief='solid',font=("arial",12,"bold")).pack(fill=Y,pady=5,padx=5)
+def info():
+   messagebox.showinfo( "How To Play", "Use arrow keys to move")
+btnPlay = Button(window, text='Play', command=window.destroy, width=10,bg="light yellow").place(relx = 0.5, rely = 0.7, anchor = CENTER)
+btnInfo = Button(window, text ="Info", command = info,width=10,bg="light yellow").place(relx = 0.5, rely = 0.8, anchor = CENTER)
+btnExit = Button(window, text ="Exit", command = exit,width=10,bg="red").place(relx = 0.5, rely = 0.9, anchor = CENTER)
+window.mainloop()
 
 def main():
     pygame.init()
     screen = display.set_mode(DISPLAY, FLAGS, DEPTH)
     display.set_caption("Platformer")
     timer = time.Clock()
-    curent_level = 1
+    current_level = 1
 
     up = down = left = right = False
     bg = Surface((32, 32))
@@ -26,7 +43,7 @@ def main():
     platforms = []
 
     x = y = 0
-    level = levels.levels[curent_level]
+    level = levels.levels[current_level]
     # build the level
     for row in level:
         for col in row:
@@ -91,7 +108,7 @@ class Player(Entity):
         self.xvel = 0
         self.yvel = 0
         self.onGround = False
-        self.image = pygame.image.load(os.path.join('dragon.png'))
+        self.image = pygame.image.load(os.path.join('char.png'))
         self.image.convert()
         self.rect = Rect(x, y, 32, 32)
 
